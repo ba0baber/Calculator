@@ -1,0 +1,92 @@
+using System;
+class Program{
+    static double m=0;
+    static void Main(){
+        Console.WriteLine("sna4ala write oper: +,-,*,/,%,1/x,x^2,sqrt,M+,M-,MR");
+        Console.WriteLine("dl9 vixoda write: 'exit'");
+        while(true){
+            try{
+                Console.Write("\nVvod: ");
+                string v=Console.ReadLine();
+                if(v=="exit") break;
+                Obrabotka(v);
+            }
+            catch(Exception e){
+                Console.WriteLine($"error: {e.Message}");
+            }
+        }
+    }
+    static void Obrabotka(string v){
+        switch(v){
+            case"+":Op('+');break;
+            case"-":Op('-');break;
+            case"*":Op('*');break;
+            case"/":Op('/');break;
+            case"%":Proc();break;
+            case"1/x":Rec();break;
+            case"x^2":Sqr();break;
+            case"sqrt":Sqrt();break;
+            case"M+":MAdd();break;
+            case"M-":MSub();break;
+            case"MR":MShow();break;
+            default:
+                if(double.TryParse(v,out double n))
+                    Console.WriteLine($"4islo: {num(n)}");
+                else Console.WriteLine("nekorrektnaya oper");
+                break;
+        }
+    }
+    static void Op(char o){
+        double a=GetNum("1: "),b=GetNum("2: "),r=0;
+        if(o=='+')r=a+b;
+        if(o=='-')r=a-b;
+        if(o=='*')r=a*b;
+        if(o=='/'){
+            if(b==0)throw new Exception("delenie na 0");
+            r=a/b;
+        }
+        Console.WriteLine($"{num(a)}{o}{num(b)}={num(r)}");
+    }
+    static void Proc(){
+        double a=GetNum("4islo: "),b=GetNum("procent: ");
+        Console.WriteLine($"{num(b)}% ot {num(a)}={num((a*b)/100)}");
+    }
+    static void Rec(){
+        double a=GetNum("4islo: ");
+        if(a==0)throw new Exception("delenie na 0");
+        Console.WriteLine($"1/{num(a)}={num(1/a)}");
+    }
+    static void Sqr(){
+        double a=GetNum("4islo: ");
+        Console.WriteLine($"{num(a)}^2={num(a*a)}");
+    }
+    static void Sqrt(){
+        double a=GetNum("4islo: ");
+        if(a<0)throw new Exception("koren <0");
+        Console.WriteLine($"sqrt({num(a)})={num(Math.Sqrt(a))}");
+    }
+    static void MAdd(){
+        double a=GetNum("4islo: ");
+        m+=a;
+        Console.WriteLine($"pamyat: {num(m)}");
+    }
+    static void MSub(){
+        double a=GetNum("4islo: ");
+        m-=a;
+        Console.WriteLine($"pamyat: {num(m)}");
+    }
+    static void MShow(){
+        Console.WriteLine($"pamyat: {num(m)}");
+    }
+    static double GetNum(string text){
+        Console.Write(text);
+        while(true){
+            string input = Console.ReadLine();
+            if(double.TryParse(input,out double n))return n;
+            Console.Write("nekorrektniy vvod " + text);
+        }
+    }
+    static string num(double number){
+        return string.Format("{0:0.##########}", number);
+    }
+}
